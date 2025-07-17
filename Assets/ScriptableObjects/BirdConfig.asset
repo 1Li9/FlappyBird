@@ -16,5 +16,7 @@ MonoBehaviour:
   _startRotation: {x: 0, y: 0, z: 0}
   _startVelocity: {x: 0, y: 0, z: 0}
   _scale: {x: 0, y: 0, z: 0}
-  _jumpVelocity: 2
-  _view: {fileID: 4452261584910299380, guid: 3ba20acae31be7044afc1a7141e8e34c, type: 3}
+  _jumpVelocity: 12
+  _view: {fileID: 7051563033226870133, guid: 3ba20acae31be7044afc1a7141e8e34c, type: 3}
+  _input: {fileID: 8648383341343872867, guid: 7783d9d40ef76bc4db55b6e0094eef80, type: 3}
+  _jumpKey: 32
