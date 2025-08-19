@@ -1,9 +1,9 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
-public class EntityReleaser<T> : MonoBehaviour where T : class, IEntity
+public class EntityReleaserView<T> : MonoBehaviour where T : class, IEntity
 {
-    private IObjectPool<T> _entityPool;
+    private EntityReleaser<T> _model;
 
     private void OnValidate()
     {
@@ -13,11 +13,11 @@ public class EntityReleaser<T> : MonoBehaviour where T : class, IEntity
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.TryGetComponent(out EntityView view) && view.Model is T model)
-            _entityPool.Release(model);
+            _model.Release(model);
     }
 
-    public void BindPool(IObjectPool<T> entityPool)
+    public void Bind(EntityReleaser<T> model)
     {
-        _entityPool = entityPool;
+        _model = model;
     }
 }

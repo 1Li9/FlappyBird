@@ -9,6 +9,7 @@ public class Bullet : IEntity
 
     public Vector3 Scale { get; private set; }
 
+    public Vector3 Direction { get; private set; }
 
     public event Action OnEnable;
     public event Action OnDisable;
@@ -36,5 +37,11 @@ public class Bullet : IEntity
     public void SetScale(Vector3 scale)
     {
         Scale = scale;
+    }
+
+    public void SetDirection(Vector3 direction)
+    {
+        direction.Normalize();
+        Direction = direction;
     }
 }

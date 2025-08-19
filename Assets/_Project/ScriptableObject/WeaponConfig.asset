@@ -16,3 +16,4 @@ MonoBehaviour:
   _weaponCooldownTime: 4
   _bulletSpeed: 5
   _bulletSpawnPosition: {x: 20, y: 0, z: 0}
+  _bulletDirection: {x: -1, y: 0, z: 0}

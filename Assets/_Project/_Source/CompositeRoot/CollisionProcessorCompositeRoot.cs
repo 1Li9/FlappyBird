@@ -1,15 +1,16 @@
-﻿using UnityEngine;
-
-public class CollisionProcessorCompositeRoot : CompositeRoot
+﻿public class CollisionProcessorCompositeRoot : CompositeRoot
 {
-    [SerializeField] private ServicesCompositeRoot _servicesRoot;
-
     public CollisionProcessor Model { get; private set; }
     public CollisonRecords Records { get; private set; }
 
+    private void Update()
+    {
+        Model.Process();
+    }
+
     public override void Composite()
     {
-        Records = new CollisonRecords(_servicesRoot.Stop);
+        Records = new CollisonRecords();
         Model = new CollisionProcessor(Records.Get());
     }
-}
+}   

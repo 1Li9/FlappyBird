@@ -1,4 +1,6 @@
-public interface ISimulation : ITickable, IPausable, IStopable
+using System;
+
+public interface ISimulation : ITickable, IDisposable
 {
 }
 

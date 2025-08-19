@@ -18,7 +18,7 @@ public class ColliderBroadcaster : MonoBehaviour
         if(collision.gameObject.TryGetComponent(out ColliderBroadcaster broadcaster))
         {
             CollisionInformation information = new((_model, broadcaster._model));
-            _processor.Process(information);
+            _processor.Add(information);
         }
     }
 }

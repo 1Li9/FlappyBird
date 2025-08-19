@@ -1,7 +1,8 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-public class EntityAnimator : MonoBehaviour, IStopable, IPausable
+public class EntityAnimator : MonoBehaviour, IDisposable, IPausable
 {
     private const string Jump = nameof(Jump);
 
@@ -22,10 +23,11 @@ public class EntityAnimator : MonoBehaviour, IStopable, IPausable
         _animator.enabled = true;
     }
 
-    public void Stop()
+    public void Dispose()
     {
         _animator.enabled = false;
     }
+
     public void SetTigger(string name)
     {
         _animator.SetTrigger(name);

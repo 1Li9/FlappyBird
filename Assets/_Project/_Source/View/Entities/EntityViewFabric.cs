@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EntityViewFabric : MonoBehaviour
 {
-    [SerializeField] private EntityPrefabs _entityPrefabs;
+    [SerializeField] private EntityPrefab _entityPrefabs;
     [SerializeField] private CollisionProcessorCompositeRoot _collisionProcessor;
     [SerializeField] private ServicesCompositeRoot _servicesRoot;
 
@@ -26,7 +26,7 @@ public class EntityViewFabric : MonoBehaviour
         if (view.gameObject.TryGetComponent(out _animator))
         {
             _animator.Init();
-            _servicesRoot.Stop.Add(_animator);
+            _servicesRoot.Dispose.Add(_animator);
             _servicesRoot.Pause.Add(_animator);
         }
 

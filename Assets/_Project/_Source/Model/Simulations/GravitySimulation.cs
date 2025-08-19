@@ -37,7 +37,7 @@ public class GravitySimulation : ISimulation<IPhysical>
         _isPaused = false;
     }
 
-    public void Stop()
+    public void Dispose()
     {
         _objs.Clear();
     }

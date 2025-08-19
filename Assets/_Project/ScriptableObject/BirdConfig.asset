@@ -17,3 +17,6 @@ MonoBehaviour:
   _minRotationAngle: 20
   _rotationSpeed: 2
   _startPosition: {x: -4, y: 0, z: 0}
+  _bulletDirection: {x: 1, y: 0, z: 0}
+  _buletSpeed: 4
+  _bulletXSpawnGap: 1

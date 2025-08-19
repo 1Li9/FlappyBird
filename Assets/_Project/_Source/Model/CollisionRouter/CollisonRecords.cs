@@ -1,25 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class CollisonRecords
 {
-    private readonly StopService _stopService;
-
-    public CollisonRecords(StopService stopService)
-    {
-        _stopService = stopService;
-    }
-
     public event Action GameStopped;
 
     public IEnumerable<IRecord> Get()
     {
-        yield return GetRecord((Bird bird, Bullet bullet) =>
+        yield return GetRecord((Bird _, EnemyBullet _) =>
         {
-            _stopService.Stop();
-
             GameStopped?.Invoke();
+        });
+
+        yield return GetRecord((Enemy enemy, BirdBullet bullet) =>
+        {
+            enemy.TakeDamage();
+            bullet.TakeDamage();
         });
     }
 

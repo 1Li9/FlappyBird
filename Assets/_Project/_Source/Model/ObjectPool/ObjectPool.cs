@@ -1,23 +1,25 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class ObjectPool<T> : IObjectPool<T> where T : class, IEntity
 {
-    private readonly Func<T> _factory;
-    private readonly Queue<T> _objs;
+    private readonly Func<Vector3, T> _factory;
+    private readonly Queue<T> _releasedObjs;
 
-    public ObjectPool(Func<T> factory)
+    public ObjectPool(Func<Vector3, T> factory)
     {
         _factory = factory;
-        _objs = new Queue<T>(); 
+        _releasedObjs = new Queue<T>(); 
     }
 
-    public T Get()
+    public T Get(Vector3 position)
     {
-        if (_objs.Count == 0)
-            return _factory?.Invoke();
+        if (_releasedObjs.Count == 0)
+            return _factory?.Invoke(position);
 
-        T obj = _objs.Dequeue();
+        T obj = _releasedObjs.Dequeue();
+        obj.SetPosition(position);
         obj.Enable();
 
         return obj;
@@ -25,12 +27,12 @@ public class ObjectPool<T> : IObjectPool<T> where T : class, IEntity
 
     public void Release(T obj)
     {
-        _objs.Enqueue(obj);
+        _releasedObjs.Enqueue(obj);
         obj.Disable();
     }
 
-    public void Clear()
+    public void Dispose()
     {
-        _objs.Clear();
+        _releasedObjs.Clear();
     }
 }

@@ -1,6 +1,6 @@
 using System;
 
-public class Spawner<T> : IDisposable, IPausable, IStopable where T : class, ITransformable
+public class Spawner<T> : IDisposable, IPausable where T : class, ITransformable
 {
     private readonly ISpawnEventPublisher _spawnEvent;
     private readonly IObjectPool<T> _pool;
@@ -18,6 +18,7 @@ public class Spawner<T> : IDisposable, IPausable, IStopable where T : class, ITr
     public void Dispose()
     {
         _spawnEvent.Spawning -= Spawn;
+        _pool.Dispose();
     }
 
     public void Pause()
@@ -35,11 +36,6 @@ public class Spawner<T> : IDisposable, IPausable, IStopable where T : class, ITr
         _strategy = strategy;
     }
 
-    public void Stop()
-    {
-        _pool.Clear();
-    }
-
     private void Spawn()
     {
         if (_isPaused)
@@ -48,7 +44,6 @@ public class Spawner<T> : IDisposable, IPausable, IStopable where T : class, ITr
         if(_strategy == null)
             throw new NullReferenceException(nameof(_strategy));
 
-        T obj = _pool.Get();
-        _strategy.Spawn(obj);
+        _strategy.Spawn(_pool.Get);
     }
 }

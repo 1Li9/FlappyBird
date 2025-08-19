@@ -4,6 +4,7 @@ public class GameOverCompositeRoot : CompositeRoot
 {
     [SerializeField] private SceneReference _sceneReference;
     [SerializeField] private CollisionProcessorCompositeRoot _collisionProcessor;
+    [SerializeField] private ServicesCompositeRoot _servicesRoot;
 
     private CollisonRecords _records;
     private SceneChanger _changer;
@@ -29,8 +30,10 @@ public class GameOverCompositeRoot : CompositeRoot
 
     private void ChangeScene()
     {
+        _servicesRoot.Dispose.Dispose();
+
         if (_isGameOver)
-            return;
+            throw new System.InvalidOperationException(nameof(ChangeScene));
 
         _changer.LoadSceneAsync(_sceneReference.SceneName);
 

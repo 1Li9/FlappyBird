@@ -6,15 +6,16 @@ public class GravityCompositeRoot : CompositeRoot
 
     public GravitySimulation Simulation { get; private set; }
 
+    private void OnDisable()
+    {
+        _servicesRoot.Dispose.Remove(Simulation);
+        _servicesRoot.Tick.Remove(Simulation);
+    }
+
     public override void Composite()
     {
         Simulation = new GravitySimulation(_config);
-        _servicesRoot.Pause.Add(Simulation);
-        _servicesRoot.Stop.Add(Simulation);
-    }
-
-    private void LateUpdate()
-    {
-        Simulation.Tick(Time.deltaTime);
+        _servicesRoot.Dispose.Add(Simulation);
+        _servicesRoot.Tick.Add(Simulation);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class EntityPrefabs : MonoBehaviour
+public class EntityPrefab : MonoBehaviour
 {
     [SerializeField] private EntityView _birdView;
     [SerializeField] private EntityView _enemyView;

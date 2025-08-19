@@ -1,34 +1,28 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveSimulation : IDisposable, ISimulation<IPositional>
+public class MoveSimulation<T> : ISimulation<T> where T : class, IPositional
 {
     private readonly Vector3 _direction;
     private readonly float _speed;
 
-    private readonly List<IPositional> _objs;
-
-    private bool _isPaused;
+    private readonly List<T> _objs;
 
     public MoveSimulation(Vector3 direction, float speed)
     {
         _direction = direction;
         _speed = speed;
-        _objs = new List<IPositional>();
+        _objs = new List<T>();
     }
 
     public void Dispose()
     {
-        Stop();
+        _objs.Clear();
     }
         
     public void Tick(float deltaTime)
     {
-        if (_isPaused)
-            return;
-
-        foreach (IPositional obj in _objs)
+        foreach (T obj in _objs)
         {
             Vector3 position = obj.Position;
             Vector3 newPosition = position + _direction;
@@ -36,32 +30,17 @@ public class MoveSimulation : IDisposable, ISimulation<IPositional>
         }
     }
 
-    public void Pause()
-    {
-        _isPaused = true;
-    }
-
-    public void Play()
-    {
-        _isPaused = false;
-    }
-
-    public void Stop()
-    {
-        _objs.Clear();
-    }
-
-    public void Add(IPositional obj)
+    public void Add(T obj)
     {
         _objs.Add(obj);
     }
 
-    public void Remove(IPositional obj)
+    public void Remove(T obj)
     {
         _objs.Remove(obj);
     }
 
-    public bool Contains(IPositional obj)
+    public bool Contains(T obj)
     {
         return _objs.Contains(obj);
     }

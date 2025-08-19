@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Enemy : IEntity
+public class Enemy : IEntity, IDamageable
 {
     public Vector3 Position { get; private set; }
 
@@ -11,6 +11,7 @@ public class Enemy : IEntity
 
     public event Action OnEnable;
     public event Action OnDisable;
+    public event Action<Enemy> Dead;
 
     public void Disable()
     {
@@ -35,5 +36,10 @@ public class Enemy : IEntity
     public void SetScale(Vector3 scale)
     {
         Scale = scale;
+    }
+
+    public void TakeDamage()
+    {
+        Dead?.Invoke(this);
     }
 }
