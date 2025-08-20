@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Bullet : IEntity
+public class Bullet : IEntity, IDamageable
 {
     public Vector3 Position { get; private set; }
 
@@ -11,17 +11,18 @@ public class Bullet : IEntity
 
     public Vector3 Direction { get; private set; }
 
-    public event Action OnEnable;
-    public event Action OnDisable;
+    public event Action Enabled;
+    public event Action Disabled;
+    public Action<Bullet> Dead;
 
     public void Disable()
     {
-        OnDisable?.Invoke();
+        Disabled?.Invoke();
     }
 
     public void Enable()
     {
-        OnEnable?.Invoke();
+        Enabled?.Invoke();
     }
 
     public void SetPosition(Vector3 position)
@@ -43,5 +44,10 @@ public class Bullet : IEntity
     {
         direction.Normalize();
         Direction = direction;
+    }
+
+    public void TakeDamage()
+    {
+        Dead?.Invoke(this);
     }
 }

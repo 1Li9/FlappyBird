@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class BulletFabric
 {
-    public T Create<T>(Func<T> model, Vector3 position) where T : Bullet
+    public Bullet Create(Func<Bullet> model, Vector3 position)
     {
-        T bullet = model();
+        Bullet bullet = model();
         bullet.SetPosition(position);
         bullet.SetScale(Vector3.one);
 

@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class Bootstrap : MonoBehaviour
 {
-    [SerializeField] private CompositeRoot[] _roots;
+    [SerializeField] private Installer[] _installers;
 
     private PauseService _pauseService;
     private GameControlls _inputs;
@@ -19,11 +19,11 @@ public class Bootstrap : MonoBehaviour
 
     private void Awake()
     {
-        foreach (var root in _roots)
+        foreach (var installer in _installers)
         {
-            root.Composite();
+            installer.Install();
 
-            if (root.gameObject.TryGetComponent(out ServicesCompositeRoot servicesRoot))
+            if (installer.gameObject.TryGetComponent(out ServicesInstaller servicesRoot))
                 _pauseService = servicesRoot.Pause;
         }
     }

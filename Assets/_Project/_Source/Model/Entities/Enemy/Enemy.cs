@@ -9,18 +9,18 @@ public class Enemy : IEntity, IDamageable
 
     public Vector3 Scale { get; private set; }
 
-    public event Action OnEnable;
-    public event Action OnDisable;
+    public event Action Enabled;
+    public event Action Disabled;
     public event Action<Enemy> Dead;
 
     public void Disable()
     {
-        OnDisable?.Invoke();
+        Disabled?.Invoke();
     }
 
     public void Enable()
     {
-        OnEnable?.Invoke();
+        Enabled?.Invoke();
     }
 
     public void SetPosition(Vector3 position)

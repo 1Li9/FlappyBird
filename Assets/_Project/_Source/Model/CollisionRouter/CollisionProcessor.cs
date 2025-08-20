@@ -1,11 +1,12 @@
+using System;
 using System.Linq;
 using System.Collections.Generic;
 
-public class CollisionProcessor
+public class CollisionProcessor : IUpdatable, IDisposable
 {
-    private readonly IEnumerable<IRecord> _records;
+    private readonly List<CollisionInformation> _collisions;
 
-    private List<CollisionInformation> _collisions;
+    private IEnumerable<IRecord> _records;
 
     public CollisionProcessor(IEnumerable<IRecord> records)
     {
@@ -13,7 +14,7 @@ public class CollisionProcessor
         _collisions = new List<CollisionInformation>();
     }
 
-    public void Process()
+    public void Update()
     {
         foreach (CollisionInformation information in _collisions)
         {
@@ -24,12 +25,17 @@ public class CollisionProcessor
                 record.Do(collision);
         }
 
-        _collisions = new List<CollisionInformation>();
+        _collisions.Clear();
     }
 
     public void Add(CollisionInformation information)
     {
         if (_collisions.Contains(information) == false)
             _collisions.Add(information);
+    }
+
+    public void Dispose()
+    {
+        _records = null;
     }
 }

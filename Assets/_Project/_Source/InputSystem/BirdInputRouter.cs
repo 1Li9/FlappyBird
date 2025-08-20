@@ -4,11 +4,11 @@ public class BirdInputRouter : IEnableable, IDisableable, IPausable
 {
     private readonly BirdJumper _jumper;
     private readonly BirdRotator _rotator;
-    private readonly Weapon<BirdBullet> _weapon;
+    private readonly Weapon _weapon;
 
     private readonly GameControlls _input;
 
-    public BirdInputRouter(BirdJumper jumper, BirdRotator rotator, Weapon<BirdBullet> weapon)
+    public BirdInputRouter(BirdJumper jumper, BirdRotator rotator, Weapon weapon)
     {
         _jumper = jumper;
         _rotator = rotator;

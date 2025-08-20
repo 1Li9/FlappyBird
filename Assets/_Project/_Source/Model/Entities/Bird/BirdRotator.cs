@@ -16,7 +16,6 @@ public class BirdRotator : ITickable
         _bird = bird;
     }
 
-
     public void Tick(float deltaTime)
     {
         Quaternion minRotation = Quaternion.Euler(0, 0, -_minAngle);

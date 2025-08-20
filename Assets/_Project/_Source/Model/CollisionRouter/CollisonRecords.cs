@@ -7,12 +7,12 @@ public class CollisonRecords
 
     public IEnumerable<IRecord> Get()
     {
-        yield return GetRecord((Bird _, EnemyBullet _) =>
+        yield return GetRecord((Bird _, Bullet _) =>
         {
             GameStopped?.Invoke();
         });
 
-        yield return GetRecord((Enemy enemy, BirdBullet bullet) =>
+        yield return GetRecord((Enemy enemy, Bullet bullet) =>
         {
             enemy.TakeDamage();
             bullet.TakeDamage();

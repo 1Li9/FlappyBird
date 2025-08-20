@@ -11,17 +11,17 @@ public class Bird : IPhysical, IEntity
 
     public Vector3 Position { get; private set; }
 
-    public event Action OnEnable;
-    public event Action OnDisable;
+    public event Action Enabled;
+    public event Action Disabled;
 
     public void Disable()
     {
-        OnDisable?.Invoke();
+        Disabled?.Invoke();
     }
 
     public void Enable()
     {
-        OnEnable?.Invoke();
+        Enabled?.Invoke();
     }
 
     public void SetPosition(Vector3 position)

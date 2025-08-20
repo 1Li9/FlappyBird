@@ -20,8 +20,8 @@ public class EntityView : MonoBehaviour
         if (_entity == null)
             return;
 
-        _entity.OnDisable -= Disable;
-        _entity.OnEnable -= Enable;
+        _entity.Disabled -= Disable;
+        _entity.Enabled -= Enable;
     }
 
     public void Init(IEntity entity)
@@ -35,8 +35,8 @@ public class EntityView : MonoBehaviour
         Synchronize();
         Enable();
 
-        _entity.OnDisable += Disable;
-        _entity.OnEnable += Enable;
+        _entity.Disabled += Disable;
+        _entity.Enabled += Enable;
     }
 
     private void Enable()

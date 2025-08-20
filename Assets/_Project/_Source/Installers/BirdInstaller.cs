@@ -1,17 +1,15 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class BirdCompositeRoot : CompositeRoot
+public class BirdInstaller : Installer
 {
-    private const string Jump = nameof(Jump);
-
     [SerializeField] private BirdConfig _config;
     [SerializeField] private EntityViewFabric _viewFabric;
 
-    [SerializeField] private GravityCompositeRoot _gravityCompositeRoot;
-    [SerializeField] private CollisionProcessorCompositeRoot _collisionProcessorCompositeRoot;
-    [SerializeField] private EntityReleaserView<BirdBullet> _bulletReleaserView;
-    [SerializeField] private ServicesCompositeRoot _servicesRoot;
+    [SerializeField] private GravityInstaller _gravityInstaller;
+    [SerializeField] private CollisionProcessorInstaller _collisionProcessorInstaller;
+    [SerializeField] private EntityReleaserView<Bullet> _bulletReleaserView;
+    [SerializeField] private ServicesInstaller _servicesRoot;
 
     private Bird _bird;
     private BirdJumper _jumper;
@@ -20,22 +18,22 @@ public class BirdCompositeRoot : CompositeRoot
     private EntityAnimator _animator;
 
     private BulletFabric _bulletFabric = new();
-    private ObjectPool<BirdBullet> _bulletPool;
-    private List<BirdBullet> _spawnedBullets = new();
-    private EntityReleaser<BirdBullet> _bulletReleaser;
-    private Weapon<BirdBullet> _weapon;
-    private BulletSimulation<BirdBullet> _bulletSimulation;
+    private ObjectPool<Bullet> _bulletPool;
+    private List<Bullet> _spawnedBullets = new();
+    private EntityReleaser<Bullet> _bulletReleaser;
+    private Weapon _weapon;
+    private BulletSimulation<Bullet> _bulletSimulation;
 
     private void OnDisable()
     {
-        _servicesRoot.Tick.Remove(_bulletSimulation);
-        _servicesRoot.Tick.Remove(_rotator);
+        _servicesRoot.UpdateSevice.Remove(_bulletSimulation);
+        _servicesRoot.UpdateSevice.Remove(_rotator);
         _servicesRoot.Pause.Remove(_inputRouter);
 
         _inputRouter.Disable();
-        _jumper.OnJump -= OnJump;
+        _jumper.Jumped -= OnJump;
 
-        foreach (BirdBullet bullet in _spawnedBullets)
+        foreach (Bullet bullet in _spawnedBullets)
             bullet.Dead -= _bulletReleaser.Release;
     }
 
@@ -45,18 +43,18 @@ public class BirdCompositeRoot : CompositeRoot
             return;
 
         _inputRouter.Enable();
-        _jumper.OnJump += OnJump;
+        _jumper.Jumped += OnJump;
     }
 
-    public override void Composite()
+    public override void Install()
     {
         _bird = new Bird();
         _bird.SetScale(Vector3.one);
         _bird.SetPosition(_config.StartPosition);
 
-        _bulletSimulation = new BulletSimulation<BirdBullet>(_config.BuletSpeed);
-        _bulletPool = new ObjectPool<BirdBullet>(BulletFabric);
-        _weapon = new Weapon<BirdBullet>(_bulletPool, _bulletSimulation, _config.BulletXSpawnGap);
+        _bulletSimulation = new BulletSimulation<Bullet>(_config.BuletSpeed);
+        _bulletPool = new ObjectPool<Bullet>(BulletFactory);
+        _weapon = new Weapon(_bulletPool, _bulletSimulation, _config.BulletXSpawnGap);
         _weapon.Bind(_bird);
 
         _bulletReleaser = new(_bulletPool);
@@ -66,26 +64,26 @@ public class BirdCompositeRoot : CompositeRoot
         _rotator = new BirdRotator(_config.MaxRotationAngle, _config.MinRotationAngle, _config.RotationSpeed, _bird);
         _inputRouter = new BirdInputRouter(_jumper, _rotator, _weapon);
 
-        _gravityCompositeRoot.Simulation.Add(_bird);
+        _gravityInstaller.Simulation.Add(_bird);
 
         EntityView view = _viewFabric.Create(_bird);
         _animator = _viewFabric.Animator;
 
-        _jumper.OnJump += OnJump;
+        _jumper.Jumped += OnJump;
 
-        _servicesRoot.Tick.Add(_bulletSimulation);
-        _servicesRoot.Tick.Add(_rotator);
+        _servicesRoot.UpdateSevice.Add(_bulletSimulation);
+        _servicesRoot.UpdateSevice.Add(_rotator);
         _servicesRoot.Pause.Add(_inputRouter);
     }
 
     private void OnJump()
     {
-        _animator.SetTigger(Jump);
+        _animator.SetTigger(EntityAnimator.AnimatorData.Jump);
     }
 
-    private BirdBullet BulletFabric(Vector3 position)
+    private Bullet BulletFactory(Vector3 position)
     {
-        BirdBullet bullet = _bulletFabric.Create(() => new BirdBullet(), position);
+        Bullet bullet = _bulletFabric.Create(() => new Bullet(), position);
         bullet.SetScale(new Vector3(-1,1,1));
 
         Vector3 angle = _bird.Rotation * Vector3.right;

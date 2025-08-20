@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class WorldMoverCompositeRoot : CompositeRoot 
+public class WorldMoverInstaller : Installer 
 {
     [SerializeField] private Vector3 _direction;
     [SerializeField] private float _speed;
-    [SerializeField] private ServicesCompositeRoot _servicesRoot;
+    [SerializeField] private ServicesInstaller _servicesInstaller;
 
     public MoveSimulation<IPositional> Simulation { get; private set; }
 
@@ -15,14 +15,14 @@ public class WorldMoverCompositeRoot : CompositeRoot
 
     private void OnDisable()
     {
-        _servicesRoot.Dispose.Remove(Simulation);
-        _servicesRoot.Tick.Remove(Simulation);
+        _servicesInstaller.Dispose.Remove(Simulation);
+        _servicesInstaller.UpdateSevice.Remove(Simulation);
     }
 
-    public override void Composite()
+    public override void Install()
     {
         Simulation = new MoveSimulation<IPositional>(_direction, _speed);
-        _servicesRoot.Dispose.Add(Simulation);
-        _servicesRoot.Tick.Add(Simulation);
+        _servicesInstaller.Dispose.Add(Simulation);
+        _servicesInstaller.UpdateSevice.Add(Simulation);
     }
 }

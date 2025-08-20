@@ -4,11 +4,14 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class EntityAnimator : MonoBehaviour, IDisposable, IPausable
 {
-    private const string Jump = nameof(Jump);
+    public static class AnimatorData
+    {
+        public static int Jump = Animator.StringToHash(nameof(Jump));
+    }
 
     private Animator _animator;
 
-    public void Init()
+    private void Awake()
     {
         _animator = GetComponent<Animator>();
     }
@@ -28,8 +31,8 @@ public class EntityAnimator : MonoBehaviour, IDisposable, IPausable
         _animator.enabled = false;
     }
 
-    public void SetTigger(string name)
+    public void SetTigger(int id)
     {
-        _animator.SetTrigger(name);
+        _animator.SetTrigger(id);
     }
 }

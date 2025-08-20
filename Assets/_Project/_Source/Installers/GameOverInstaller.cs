@@ -1,15 +1,15 @@
 using UnityEngine;
 
-public class GameOverCompositeRoot : CompositeRoot
+public class GameOverInstaller : Installer
 {
     [SerializeField] private SceneReference _sceneReference;
-    [SerializeField] private CollisionProcessorCompositeRoot _collisionProcessor;
-    [SerializeField] private ServicesCompositeRoot _servicesRoot;
+    [SerializeField] private CollisionProcessorInstaller _collisionProcessor;
+    [SerializeField] private ServicesInstaller _servicesInstaller;
 
     private CollisonRecords _records;
     private SceneChanger _changer;
 
-    private bool _isGameOver;
+    private bool _isGameOver = false;
 
     private void OnDisable()
     {
@@ -21,7 +21,7 @@ public class GameOverCompositeRoot : CompositeRoot
         _sceneReference.OnValidate();
     }
 
-    public override void Composite()
+    public override void Install()
     {
         _records = _collisionProcessor.Records;
         _changer = SceneChanger.Instance;
@@ -30,7 +30,7 @@ public class GameOverCompositeRoot : CompositeRoot
 
     private void ChangeScene()
     {
-        _servicesRoot.Dispose.Dispose();
+        _servicesInstaller.Dispose.Dispose();
 
         if (_isGameOver)
             throw new System.InvalidOperationException(nameof(ChangeScene));

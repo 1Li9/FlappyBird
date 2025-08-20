@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
 
-public class Weapon<T> where T : Bullet
+public class Weapon
 {
-    private readonly IObjectPool<T> _pool;
-    private readonly ISimulation<T> _simulation;
+    private readonly IObjectPool<Bullet> _pool;
+    private readonly ISimulation<Bullet> _simulation;
     private readonly float _xBulletSpawnGap;
 
     private IPositional _positional;
     private float _currentTime;
 
-    public Weapon(IObjectPool<T> pool, ISimulation<T> simulation, float xBulletSpawnGap)
+    public Weapon(IObjectPool<Bullet> pool, ISimulation<Bullet> simulation, float xBulletSpawnGap)
     {
         _pool = pool;
         _simulation = simulation;
@@ -22,7 +22,7 @@ public class Weapon<T> where T : Bullet
             throw new System.InvalidOperationException(nameof(Shoot));
 
         Vector3 position = new(_positional.Position.x + _xBulletSpawnGap, _positional.Position.y, _positional.Position.z);
-        T bullet = _pool.Get(position);
+        Bullet bullet = _pool.Get(position);
 
         if (_simulation.Contains(bullet) == false)
             _simulation.Add(bullet);

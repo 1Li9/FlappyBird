@@ -3,8 +3,8 @@ using UnityEngine;
 public class EntityViewFabric : MonoBehaviour
 {
     [SerializeField] private EntityPrefab _entityPrefabs;
-    [SerializeField] private CollisionProcessorCompositeRoot _collisionProcessor;
-    [SerializeField] private ServicesCompositeRoot _servicesRoot;
+    [SerializeField] private CollisionProcessorInstaller _collisionProcessor;
+    [SerializeField] private ServicesInstaller _servicesRoot;
 
     private EntityAnimator _animator;
 
@@ -25,7 +25,6 @@ public class EntityViewFabric : MonoBehaviour
 
         if (view.gameObject.TryGetComponent(out _animator))
         {
-            _animator.Init();
             _servicesRoot.Dispose.Add(_animator);
             _servicesRoot.Pause.Add(_animator);
         }
